@@ -1,0 +1,603 @@
+// comment
+/*
+ comment
+ comment
+ */
+
+// 定数 let
+
+//let msg: String
+//msg = "hello world"
+var msg = "hello world"
+
+msg = ""
+
+print(msg)
+
+// Int
+let i: Int = 10;
+
+// Float Double(型推論の場合これ)
+let d = 53.8
+
+// String
+
+// Bool
+let flg = true
+
+
+var x = "five"
+
+// 型変換
+x = String(5)
+
+
+// 計算(+ - * / %)
+// +=
+print("hello" + " i is \(i * 2)")
+
+
+// 論理値 && || !true
+
+let score = 70
+var result: String
+
+if score > 80 {
+    result = "great"
+} else if score > 50 {
+    result = "good"
+}
+
+result = score > 80 ? "great" : "good"
+
+
+let num = 34
+
+switch num {
+case 0:
+    result = "0"
+case 1, 2, 3:
+    result = "1/2/3"
+case 4...6:
+    result = "4/5/6"
+case 7..<9 :
+    result = "7/8"
+case let n where n > 20:
+    result = "\(n)"
+default:
+    result = "bb"
+    break
+}
+
+
+print(result)
+
+
+// while
+var n = 0
+
+while n < 3 {
+    print(n)
+    n += 1
+}
+
+repeat {
+    print(n)
+    n += 1
+} while n < 3
+
+
+// for
+for i in 0...5 {
+    // continue break
+    print(i)
+}
+
+
+// nil は　null
+
+// Int, String は入れられない
+//let s: String = nil
+
+let s: Optional<String> = nil
+let st: String? = nil
+
+if s != nil {
+    print(s!)  // アンラップする
+}
+
+// Optional Binding
+if let value = s {
+    print(value)
+}
+
+print(s ?? "this is nil")
+
+
+// 配列
+// 順序付きのデータ型
+//var scores: [Int] = [40, 50]
+var scores = [40, 50]
+
+print(scores)
+print(scores[0])
+print(scores.count)
+print(scores.isEmpty)
+
+var names = [String]()
+names.append("taguchi")
+names += ["ino"]
+
+for name in names {
+    print(name)
+}
+
+
+// タプル
+// 順序付きのデータ型, 異なる型も入れることが可能
+var items = ("apple", 5)
+
+print(items)
+print(items.0)
+
+// _ で値の破棄
+let (product, _) = items
+print(product)
+
+var item2 = (product: "orange", num: 4)
+print(item2.product)
+
+
+// 集合
+// 順序なし、重複なし
+//var winners: Set<Int> = [3, 5, 6]
+var winners: Set = [3, 5, 6, 6]
+
+// 重複が消える
+print(winners)
+
+print(winners.contains(3))
+winners.insert(10)
+winners.remove(5)
+winners.count
+
+var a = Set<Int>()
+print(a.isEmpty)
+a.insert(1)
+a.insert(3)
+a.insert(5)
+a.insert(8)
+
+let b: Set = [3, 5, 8, 9]
+
+// 和集合
+print(a.union(b))
+// 積集合
+print(a.intersection(b))
+// 差集合
+print(a.subtracting(b))
+
+
+// 辞書型
+// キーと値を持つ
+//var sales: Dictionary<String, Int> = ["taguchi": 100, "ino": 500]
+var sales: Dictionary = ["taguchi": 100, "ino": 500]
+
+sales["a"] = 100
+
+// 指定した要素があるかわからないので、Optionalで返ってくる
+print(sales["a"] ?? "non")
+print(sales.count)
+
+// タプルを使って取り出す
+for (key, value) in sales {
+    print("\(key): \(value)")
+}
+
+let dic = [String: Int]()
+print(dic.isEmpty)
+
+
+// 関数, 引数, 初期値
+func sayHi(from name: String = "tom") -> String {
+    return "hi! " + name
+}
+
+// from を _ に変えることで、省略することも可能
+sayHi(from: "tai")
+sayHi()
+
+// 引数は定数として扱われる
+//func add10(x: Int) {
+//    x += 10
+//}
+
+// 変数に変えるには
+func add10(x: inout Int) {
+    x += 10
+    print(x)
+}
+
+var e = 5
+add10(x: &e)
+// 引数も変わる
+print(e)
+
+
+// クラス
+class User {
+    let name: String // property
+    
+    var score: Int {
+        // プロパティの監視(initでは行われない)
+        willSet {
+            // before change
+            // 変化後の値 : newValue
+            print("\(score) -> \(newValue)")
+        }
+        didSet {
+            // after change
+            // 変化前の値 : oldValue
+            print("Change: \(score - oldValue)")
+        }
+    }
+    
+    // 計算プロパティ
+    var level: Int {
+        get {
+            return(score / 10)
+        }
+        set {
+            if newValue >= 0 {
+                score = newValue * 10
+            }
+        }
+    }
+    // getのみの場合
+//    var level: Int {
+//        return(score / 10)
+//    }
+    
+    // static
+    static var count = 0
+    
+    init() {
+        self.name = "me"
+        self.score = 23
+    }
+    init(_ name: String, _ score: Int) {
+        self.name = name
+        self.score = score
+        // static なので
+        User.count += 1
+    }
+    
+    // メソッド
+    func sayHi(_ msg: String) {
+        print("\(msg)! \(name)")
+    }
+    
+//    static func getInfo() {
+//        print("\(count) instances")
+//    }
+    class func getInfo() {
+        print("\(count) instances")
+    }
+}
+
+// let user: User = User()
+let user = User("tom", 40)
+print(user.name)
+user.score = 36
+print(user.score)
+
+print(user.level)
+user.level = 5
+print(user.score)
+
+user.sayHi("hi")
+
+
+// 継承
+class AdminUser: User {
+    func sayHelo() {
+        print("hello \(name)")
+    }
+    // 親クラスのメソッドをoverrideされたくないなら、finalをつける
+    override func sayHi(_ msg: String) {
+        print("[Admin] \(msg)! \(name)")
+    }
+    
+    // override できない
+//    override static func getInfo() {
+//        print("\(count) instances")
+//    }
+    
+    // class にすれば可能
+    override class func getInfo() {
+        print("[Admin] \(count) instances")
+    }
+}
+
+let bob = AdminUser("bob", 69)
+bob.sayHelo()
+bob.score
+
+
+User.getInfo()
+AdminUser.getInfo()
+
+
+// 型キャスト
+let users: [User] = [user, bob]
+
+for user in users {
+    // as は型キャスト
+    if let u = user as? AdminUser {
+        print(u.name)
+    }
+    
+    if user is AdminUser {
+        let u = user as! AdminUser
+        print(u.name)
+    }
+}
+
+
+// プロトコル(interfaceみたいなもの)
+// クラスに対して、プロパティやメソッドを実装することを約束させる
+// 複数適合することが可能、protocolがprotocolを継承することも可能
+protocol Printable {
+    // varで宣言 読み書きできるかつける(get, set)
+    var type: String {get}
+    var count: Int {get set}
+    func printout()
+}
+
+class Usr: Printable {
+    let name: String
+    let type = "Laser"
+    var count = 0
+    
+    init(_ name: String) {
+        self.name = name
+    }
+    
+    func printout() {
+        count += 1
+        print("\(type): \(count)")
+    }
+}
+
+let tom = Usr("tom")
+tom.printout()
+tom.printout()
+
+
+// エクステンション
+// 既存の型に、新しいプロパティやメソッドを追加できる
+
+let message = "hello"
+// 本来
+print(message.characters.count)
+
+extension String {
+    var length: Int {
+        return self.characters.count
+    }
+}
+
+print(message.length)
+
+// protocol に extenssion を持たせることで、実装を持ったprotocolを作れる
+extension Printable {
+    func printout() {
+        print("now printing...")
+    }
+}
+
+tom.printout()
+
+
+
+// Int Double -> 値型
+// class -> 参照型
+
+var original = 10
+var copy = original
+original = 20
+print(original)
+print(copy)
+
+var originalClass = User("tom", 40)
+var copyClass = originalClass
+originalClass.score = 30
+print(originalClass.score)
+print(copyClass.score)
+
+
+
+// 構造体
+// クラスと同じだが、値型になる
+// 継承ができない
+// extenssion, protocolはOK
+struct User2 {
+    var name: String
+    init(_ name: String) {
+        self.name = name
+    }
+    
+    // 1回作られたら、値が変わってほしくない場合に使う
+    // 値を変えたい場合は、明示的に mutating を使う
+    mutating func changeName() {
+        self.name = name.uppercased()
+    }
+}
+
+var originalUser = User2("tom")
+var copyUser = originalUser
+originalUser.name = "bob"
+print(originalUser.name)
+print(copyUser.name)
+
+
+
+// 列挙型
+// 値型になる
+// メソッドを持つことも、protocol, extenssionも可能
+enum Direction {
+    case right
+    case left
+}
+
+
+var dir: Direction
+//dir = Direction.left
+dir = .right
+
+// 列挙型の場合、すべてが網羅できていなかったら、エラーとなる
+switch dir {
+case .right:
+    print("right")
+case .left:
+    print("left")
+}
+
+// 値を持たせたい場合
+enum DirectionA: Int {
+    case right = 1
+    case left = -1
+}
+
+print(DirectionA.right.rawValue)
+
+
+
+// ジェネリクス
+// 型の汎用化
+func getThree<T>(x: T) {
+    print(x)
+    print(x)
+    print(x)
+}
+
+getThree(x: 5)
+getThree(x: "hello")
+
+
+// サブスクリプト
+// インスタンスに対して、配列と同じようなインデックスをつけられる
+// クラス、構造体、列挙型にも使える
+class Team {
+    var members = ["taguchi", "ino"]
+    subscript(index: Int) -> String {
+        get {
+            return members[index]
+        }
+        set {
+            members.insert(newValue, at: index)
+        }
+    }
+}
+
+var giants = Team()
+print(giants[0])
+
+
+
+// guard
+// 異常処理をわかりやすく書く
+// 処理が長くなったときに、早めに処理を切り上げる(early return, early exit)
+func sayYeah(_ msg: String?) {
+    // Optional Bindingを使うと
+//    if let s = msg {
+//        print(s)
+//    } else {
+//        print("not value set")
+//    }
+    
+    // ミスが起こりやすい(returnの書き忘れ)
+//    if msg == nil {
+//        print("not value set")
+//        return
+//    }
+//    print(msg!)
+    
+    // guard
+    guard let s = msg else {
+        print("not value set")
+        // return を忘れるとエラーになる
+        return
+    }
+    // !を使ってunwrapしなくてよい
+    print(s)
+}
+
+sayYeah(nil)
+sayYeah("a")
+
+
+
+// 例外処理
+// Errorプロトコルを適合する
+enum LoginError: Error {
+    case emptyName
+    case shortName
+}
+
+class User1 {
+    let name: String
+    init(_ name: String) {
+        self.name = name
+    }
+    func login() throws {
+        guard name != "" else {
+            throw LoginError.emptyName
+        }
+        guard name.characters.count > 5 else {
+            throw LoginError.shortName
+        }
+        
+        print("login success")
+    }
+}
+
+let rick = User1("rick")
+
+do {
+    try rick.login()
+} catch LoginError.emptyName {
+    print("please enter your name")
+} catch LoginError.shortName {
+    print("too short")
+}
+
+
+
+// Optional Chainaing
+class User5 {
+    var name: String? = ""
+}
+
+let usr: User5?
+usr = User5()
+usr?.name = "him"
+// usr?をつけるとnilならnilを、そうでなかったらOptionalを返す
+if let st = usr?.name?.uppercased() {
+    print(st)
+}
+
+
+// 暗黙的アンラップOptional
+// 絶対に値が設定されていると保証されている値だけに使うこと
+// nilが入った場合は強制的にプログラムが終了する
+//let message2: ImplicitlyUnwrappedOptional<String>
+let message2: String!
+message2 = "hello"
+
+print(message2)
+
+// iOS開発を扱うオブジェクトのいくつかによく使われる
+// そのようなオブジェクトは「初期化のときnil、その後はずっと値が入っている」という性質を持つ
+
+
